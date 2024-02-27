@@ -1,0 +1,5 @@
+**/.cache
+**/bin
+**/Makefile
+**/*.sh
+compile_commands.json
