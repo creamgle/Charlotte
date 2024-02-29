@@ -1,26 +1,34 @@
 #include "Charlotte/Core/Application.h"
 #include "Charlotte/Core/Log.h"
+#include "Charlotte/Renderer/BackendRenderer.h"
 
-class SandboxApp : public Charlotte::Application {
+using namespace Charlotte;
+
+class SandboxApp : public Application {
     protected:
         bool Create() override {
-            LogFatal("This is a test %i", 10);
-            LogError("This is a test %i", 10);
-            LogWarn("This is a test %i", 10);
-            LogInfo("This is a test %i", 10);
-            LogDebug("This is a test %i", 10);
+            GetWindow().SetTitle("Boner pills are nothing but placebo");
+
+            if (!BackendRenderer::Initialise()) {
+                return false;
+            }
 
             return true;
+        }
+
+        void Draw() override {
+            BackendRenderer::SetClearColor(1, 0, 1, 1);
+            BackendRenderer::Clear();
         }
 };
 
 int main() {
-    Charlotte::ApplicationConfig config = { };
+    ApplicationConfig config = { };
     config.Width = 1280;
     config.Height = 720;
     config.Title = "Sandbox - [Charlotte]";
 
-    Charlotte::Application* app = new SandboxApp();
+    Application* app = new SandboxApp();
     
     if (!app->Run(config)) {
         LogFatal("Application did not shutdown gracefully!");

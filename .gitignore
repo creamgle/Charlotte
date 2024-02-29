@@ -2,4 +2,5 @@
 **/bin
 **/Makefile
 **/*.sh
+Charlotte/.DS_Store
 compile_commands.json

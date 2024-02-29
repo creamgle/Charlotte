@@ -1,10 +1,16 @@
 #include "Application.h"
+#include "Charlotte/Core/Window.h"
 #include "Log.h"
 
 namespace Charlotte {
 
     bool Application::Run(const ApplicationConfig& config) {
-        mWindow = new Window(config.Width, config.Height, config.Title);
+        WindowData data = { };
+        data.Width = config.Width;
+        data.Height = config.Height;
+        data.Title = config.Title;
+
+        mWindow = Window::CreateWindow(data);
         if (!mWindow->Create()) {
             LogError("Failed to create platform window!");
             return false;
@@ -15,13 +21,16 @@ namespace Charlotte {
             return false;
         }
 
-        while (!mWindow->ShouldExit()) {
+        while (!mWindow->ShouldClose()) {
+            Update();
+            
+            Draw();
+
+            mWindow->SwapBuffers();
             mWindow->PollEvents();
         }
 
         mWindow->Shutdown();
-        delete mWindow;
-
         return true;
     }
 

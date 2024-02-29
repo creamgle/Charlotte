@@ -13,16 +13,19 @@ project "Charlotte"
 
     includedirs {
         "src/",
-        "%{Includes.GLFW}"
+        "%{Includes.GLFW}",
+        "%{Includes.Glad}"
     }
 
     defines {
         "CH_EXPORT",
-        "GLFW_INCLUDE_NONE"
+        "GLFW_INCLUDE_NONE",
+        "OPENGL"
     }
 
     links {
-        "GLFW"
+        "GLFW",
+        "Glad"
     }
 
     -- Mac specific libraries for OpenGL and GLFW to work (and possibly others down the road)

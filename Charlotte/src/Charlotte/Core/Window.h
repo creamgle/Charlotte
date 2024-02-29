@@ -23,17 +23,21 @@ namespace Charlotte {
 
     class CAPI Window {
         public:
-            Window(uint32_t width, uint32_t height, const std::string& title);
-            ~Window();
+            virtual ~Window() = default;
 
-            bool Create();
-            void PollEvents();
-            void Shutdown();
-            bool ShouldExit();
+            static Scope<Window> CreateWindow(const WindowData& data = WindowData());
 
-        private:
-            WindowData mData;
-            GLFWwindow* mHandle;
+            virtual bool Create() = 0;
+            virtual void PollEvents() = 0;
+            virtual void SwapBuffers() = 0;
+            virtual void Shutdown() = 0;
+            virtual bool ShouldClose() = 0;
+
+            virtual void SetSize(uint32_t width, uint32_t height) = 0;
+            virtual void SetTitle(const std::string& title) = 0;
+
+            virtual uint32_t GetWidth() const = 0;
+            virtual uint32_t GetHeight() const = 0;
     };
 
 }

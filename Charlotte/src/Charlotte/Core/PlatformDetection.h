@@ -1,5 +1,11 @@
 #pragma once
 
+/**
+    PlatformDetection.h detects what platform the program
+    is being ran on, currently only supports:
+        - macOS (intel, arm might work but not sure)
+*/
+
 #if defined(__APPLE__)
     #include <TargetConditionals.h>
 

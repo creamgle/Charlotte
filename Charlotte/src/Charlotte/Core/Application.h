@@ -37,6 +37,12 @@ namespace Charlotte {
             */
             bool Run(const ApplicationConfig& config);
 
+            /**
+                Returns the primary game window, handled by the app,
+                used for things like (Window).GetWidth(), or (Window).SetTitle(string)
+            */
+            Window& GetWindow() { return *mWindow; }
+
         protected:
             /**
                 Create() is called when (Application).Run() is called,
@@ -45,8 +51,23 @@ namespace Charlotte {
             */
             virtual bool Create() = 0;
 
+            /**
+                Update() is called once every frame, used for input checking and
+                scene switching, and other various updating stuff that isnt scene
+                specific
+            */
+            virtual void Update() { }
+
+            /**
+                Draw() is used for rendering meshes and stuff like that,
+                its best to use the scene and ECS to render things, but this
+                will suffice for simple rendering; gui and stuff like that
+            */
+            virtual void Draw() { }
+
+
         private:
-            Window* mWindow = nullptr;
+            Scope<Window> mWindow;
     };
 
 }
