@@ -1,6 +1,7 @@
+# .DS_Store ignore doesnt work should fix 
+**/.DS_Store
 **/.cache
 **/bin
 **/Makefile
 **/*.sh
-Charlotte/.DS_Store
 compile_commands.json
