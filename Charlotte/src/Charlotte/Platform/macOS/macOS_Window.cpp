@@ -1,4 +1,5 @@
 #include "macOS_Window.h"
+#include "Charlotte/Core/Input.h"
 #include "Charlotte/Core/Log.h"
 #include "Charlotte/Renderer/GraphicsContext.h"
 
@@ -27,6 +28,18 @@ namespace Charlotte {
             LogFatal("Failed to create glfw window!");
             return false;
         }
+
+        glfwSetKeyCallback(mHandle, [](GLFWwindow*, int key, int scancode, int action, int mods) {
+            if (key < 0) return;
+            Input::SetKey(key, action != GLFW_RELEASE);
+        });
+
+        glfwSetCursorPosCallback(mHandle, [](GLFWwindow*, double xpos, double ypos) {
+            Input::SetCursorPosition(
+                static_cast<float>(xpos),
+                static_cast<float>(ypos)
+            );
+        });
 
         mContext = GraphicsContext::Create();
         mContext->Initialise(mHandle);

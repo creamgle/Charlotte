@@ -6,6 +6,8 @@
 
 namespace Charlotte {
 
+    struct Matrix4;
+
     class CAPI Shader {
         public:
             virtual ~Shader() = default;
@@ -20,6 +22,7 @@ namespace Charlotte {
             virtual void SetUniformFloat2(const std::string& name, float x, float y) = 0;
             virtual void SetUniformFloat3(const std::string& name, float x, float y, float z) = 0;
             virtual void SetUniformFloat4(const std::string& name, float x, float y, float z, float w) = 0;
+            virtual void SetUniformMatrix4(const std::string& name, const Matrix4& value) = 0;
     };
 
 }

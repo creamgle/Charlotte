@@ -1,5 +1,8 @@
 #include "Charlotte/Core/Application.h"
+#include "Charlotte/Core/Input.h"
 #include "Charlotte/Core/Log.h"
+#include "Charlotte/Core/Matrix4.h"
+#include "Charlotte/Core/Transform.h"
 #include "Charlotte/Renderer/BackendRenderer.h"
 #include "Charlotte/Renderer/Mesh.h"
 #include "Charlotte/Renderer/Shader.h"
@@ -19,8 +22,10 @@ class SandboxApp : public Application {
             const std::string& vertex = R"(
                 #version 400
                 layout(location=0) in vec3 aPosition;
+                uniform mat4 uModel;
+                uniform mat4 uProjection;
                 void main() {
-                    gl_Position = vec4(aPosition, 1.0);
+                    gl_Position = uProjection * uModel * vec4(aPosition, 1.0);
                 }
             )";
 
@@ -33,26 +38,41 @@ class SandboxApp : public Application {
             )";
 
             std::vector<Vertex> vertices = {
-                { { -1, -1, 0 } },
-                { { 1, -1, 0 } },
-                { { 0, 1, 0 } }
+                { { 0, 0, 0 } },
+                { { 1, 0, 0 } },
+                { { 0, 1, 0 } },
+                { { 1, 1, 0 } }
             };
             
             std::vector<uint32_t> triangles = {
-                0, 1, 2
+                0, 1, 2,
+                2, 3, 1
             };
 
             mShader = Shader::Create(vertex, fragment);
             mMesh = Mesh::Create(vertices, triangles);
 
+            mTransform.Scale = (Vector3){ 100.0f, 100.0f, 1.0f };
+
             return true;
         }
 
         void Draw() override {
-            BackendRenderer::SetClearColor(1, 0, 1, 1);
+            BackendRenderer::SetClearColor(0.3, 0.3, 0.3, 1.0);
             BackendRenderer::Clear();
 
+            Matrix4 projection = Matrix4::Ortho(0, GetWindow().GetWidth(), 0, GetWindow().GetHeight(), 0.0f, 100.0f);
+
+            float speed = 1.0f;
+            if (Input::GetKey(KeyCode::Left)) mTransform.Position.x -= speed;
+            if (Input::GetKey(KeyCode::Right)) mTransform.Position.x += speed;
+
+            if (Input::GetKey(KeyCode::Up)) mTransform.Position.y += speed;
+            if (Input::GetKey(KeyCode::Down)) mTransform.Position.y -= speed;
+
             mShader->Bind();
+            mShader->SetUniformMatrix4("uProjection", projection);
+            mShader->SetUniformMatrix4("uModel", Transform::CreateModel(mTransform));
             mMesh->Draw();
             mShader->Unbind();
         }
@@ -60,6 +80,7 @@ class SandboxApp : public Application {
     private:
         Ref<Mesh> mMesh;
         Ref<Shader> mShader;
+        Transform mTransform;
 };
 
 int main() {

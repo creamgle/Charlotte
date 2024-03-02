@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "Charlotte/Core/Window.h"
+#include "Input.h"
 #include "Log.h"
 
 namespace Charlotte {
@@ -26,6 +27,7 @@ namespace Charlotte {
             
             Draw();
 
+            Input::LateUpdate();
             mWindow->SwapBuffers();
             mWindow->PollEvents();
         }

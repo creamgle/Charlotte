@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CharCore.h"
+#include "Charlotte/Core/Matrix4.h"
 #include "Charlotte/Renderer/Shader.h"
 
 #include <string>
@@ -20,6 +21,7 @@ namespace Charlotte {
             void SetUniformFloat2(const std::string& name, float x, float y) override;
             void SetUniformFloat3(const std::string& name, float x, float y, float z) override;
             void SetUniformFloat4(const std::string& name, float x, float y, float z, float w) override;
+            void SetUniformMatrix4(const std::string& name, const Matrix4& value) override;
 
         private:
             void Generate(const std::string& vertex, const std::string& fragment);

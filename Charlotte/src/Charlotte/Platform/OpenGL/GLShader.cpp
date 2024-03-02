@@ -102,4 +102,8 @@ namespace Charlotte {
         glUniform4f(glGetUniformLocation(mProgram, name.c_str()), x, y, z, w);
     }
 
+    void GLShader::SetUniformMatrix4(const std::string& name, const Matrix4& value) {
+        glUniformMatrix4fv(glGetUniformLocation(mProgram, name.c_str()), 1, GL_FALSE, &value.m[0]);
+    }
+
 }
